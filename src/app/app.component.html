@@ -1,12 +1,21 @@
 <mat-table inlineEdit [dataSource]="dataSource" class="mat-elevation-z8">
-  <ng-container *ngFor="let column of columns" [matColumnDef]="column.name">
+  <ng-container
+    *ngFor="let column of columns; let columnIndex = index"
+    [matColumnDef]="column.name"
+  >
     <mat-header-cell *matHeaderCellDef>{{ column.label }}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{ column.dataExtractor(row) }}</mat-cell>
+    <mat-cell
+      *matCellDef="let row; index as rowIndex"
+      [attr.disabled]="
+        disabledFields.has(rowIndex + '-' + columnIndex) ? '' : null
+      "
+      >{{ column.dataExtractor(row) }}</mat-cell
+    >
   </ng-container>
 
-  <mat-header-row *inlineEditControls></mat-header-row>
+  <ng-container *inlineEditControls></ng-container>
   <mat-header-row
     *matHeaderRowDef="displayedColumns; sticky: true"
   ></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  <mat-row #matrow *matRowDef="let row; columns: displayedColumns"></mat-row>
 </mat-table>

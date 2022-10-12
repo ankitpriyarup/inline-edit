@@ -5,3 +5,15 @@ p {
 mat-table {
   width: 100%;
 }
+
+mat-cell[active] {
+  box-shadow: 0 0 0 2px black inset;
+}
+
+mat-cell[selected] {
+  background-color: lightblue;
+}
+
+mat-cell[disabled] {
+  background-color: lightgrey;
+}

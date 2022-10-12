@@ -60,4 +60,15 @@ export class AppComponent {
     },
   ];
   dataSource = ELEMENT_DATA;
+  disabledFields = new Set<string>();
+
+  constructor() {
+    for (let i = 0; i < this.dataSource.length; i++) {
+      for (let j = 0; j < this.columns.length; j++) {
+        if (Math.random() < 0.3) {
+          this.disabledFields.add(`${i}-${j}`);
+        }
+      }
+    }
+  }
 }
