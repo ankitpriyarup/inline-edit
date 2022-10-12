@@ -240,6 +240,8 @@ export class InlineEditControlsRow {}
   selector: '[inlineEditControls]',
 })
 export class InlineEditControlsDirective {
+  @Input() inlineEditControls: MatTable<unknown>;
+
   constructor(
     private templateRef: TemplateRef<unknown>,
     private viewContainerRef: ViewContainerRef
@@ -247,6 +249,6 @@ export class InlineEditControlsDirective {
 
   ngOnInit() {
     this.viewContainerRef.createComponent(InlineEditControlsRow);
-    // this.viewContainerRef.createComponent(HeaderRow);
+    this.inlineEditControls.addHeaderRowDef
   }
 }

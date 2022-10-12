@@ -4,6 +4,7 @@ p {
 
 mat-table {
   width: 100%;
+  user-select: none;
 }
 
 mat-cell[active] {
