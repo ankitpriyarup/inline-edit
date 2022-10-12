@@ -230,11 +230,11 @@ export class InlineEditDirective {
   }
 }
 
-// @Component({
-//   template:
-//     '<mat-header-row *matHeaderRowDef="[\'position\']"></mat-header-row>',
-// })
-// export class HeaderRow {}
+@Component({
+  selector: 'inline-edit-controls-row',
+  template: '<mat-header-row *matHeaderRowDef="[]"></mat-header-row>',
+})
+export class InlineEditControlsRow {}
 
 @Directive({
   selector: '[inlineEditControls]',
@@ -246,6 +246,7 @@ export class InlineEditControlsDirective {
   ) {}
 
   ngOnInit() {
+    this.viewContainerRef.createComponent(InlineEditControlsRow);
     // this.viewContainerRef.createComponent(HeaderRow);
   }
 }

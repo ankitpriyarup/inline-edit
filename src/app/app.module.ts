@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { HelloComponent } from './hello.component';
 import {
   InlineEditControlsDirective,
+  InlineEditControlsRow,
   InlineEditDirective,
 } from './inline-edit.directive';
 
@@ -17,6 +18,7 @@ import {
     HelloComponent,
     InlineEditDirective,
     InlineEditControlsDirective,
+    InlineEditControlsRow,
   ],
   bootstrap: [AppComponent],
 })
