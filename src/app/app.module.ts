@@ -9,9 +9,10 @@ import {
   InlineEditControls,
   InlineEditDirective,
 } from './inline-edit.directive';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, MatTableModule],
+  imports: [BrowserModule, FormsModule, MatTableModule, MatButtonModule],
   declarations: [
     AppComponent,
     HelloComponent,

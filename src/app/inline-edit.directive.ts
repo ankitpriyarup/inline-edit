@@ -242,7 +242,10 @@ export class InlineEditDirective {
   template: `
   <ng-container matColumnDef="inline-edit-controls">
     <mat-header-cell *matHeaderCellDef>
-      <p>It works</p>
+      <ng-container *ngIf="!isEditMode">
+        <ng-content select="read-header"></ng-content>
+        <button mat-stroked-button color="primary" (click)="toggleEdit()">Edit</button>
+      </ng-container>
     </mat-header-cell>
   </ng-container>
   <<mat-header-row *matHeaderRowDef="['inline-edit-controls']; sticky: true">
@@ -255,12 +258,22 @@ export class InlineEditControls implements AfterViewInit {
   @ViewChild(MatHeaderRowDef, { static: true })
   private headerRowDef: MatHeaderRowDef | undefined;
 
+  isEditMode = false;
+
   constructor(@Host() private readonly matTable: MatTable<unknown>) {}
 
   public ngAfterViewInit(): void {
-    if (this.headerRowDef) {
-      this.matTable.addHeaderRowDef(this.headerRowDef);
-      this.matTable.addColumnDef(this.columnDef);
+    // https://github.com/angular/components/issues/21791
+    const existingHeaderRowDefs = this.matTable._contentHeaderRowDefs;
+    for (const row of existingHeaderRowDefs.toArray()) {
+      console.log(row);
+      this.matTable.removeHeaderRowDef(row);
     }
+    this.matTable.addHeaderRowDef(this.headerRowDef);
+    this.matTable.addColumnDef(this.columnDef);
+  }
+
+  toggleEdit() {
+    this.isEditMode = !this.isEditMode;
   }
 }

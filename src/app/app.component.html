@@ -1,4 +1,4 @@
-<mat-table #table inlineEdit [dataSource]="dataSource" class="mat-elevation-z8">
+<mat-table inlineEdit [dataSource]="dataSource" class="mat-elevation-z8">
   <ng-container
     *ngFor="let column of columns; let columnIndex = index"
     [matColumnDef]="column.name"
@@ -13,7 +13,9 @@
     >
   </ng-container>
 
-  <inline-edit-controls></inline-edit-controls>
+  <inline-edit-controls>
+    <div class="read-header">Filters go here...</div>
+  </inline-edit-controls>
 
   <mat-header-row
     *matHeaderRowDef="displayedColumns; sticky: true"
