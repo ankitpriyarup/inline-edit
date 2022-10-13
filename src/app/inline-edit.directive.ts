@@ -13,6 +13,8 @@ import {
   Component,
   AfterViewInit,
   ViewChild,
+  Injector,
+  SkipSelf,
 } from '@angular/core';
 import {
   MatColumnDef,
@@ -27,7 +29,7 @@ type Position = [number, number];
 @Directive({
   selector: '[inlineEdit]',
 })
-export class InlineEditDirective {
+export class InlineEditDirective implements AfterViewInit {
   private readonly selection = new BehaviorSubject<Position[]>([]);
   private readonly cellByIndex = new Map<string, HTMLElement>();
   private maxGridSize: Position = [0, 0];
@@ -35,6 +37,8 @@ export class InlineEditDirective {
 
   constructor(
     private readonly elementRef: ElementRef,
+    private readonly viewContainer: ViewContainerRef,
+    private readonly injector: Injector,
     // content queries will not pick up elements from its host here.
     // it seems to be a known issue in ivy.
     // https://ng-run.com/edit/xR0XUDYenymzk66bL8Up
@@ -90,6 +94,15 @@ export class InlineEditDirective {
           }
         }
       );
+  }
+
+  ngAfterViewInit() {
+    const injector = Injector.create({
+      providers: [{ provide: MatTable, useValue: this.matTable }],
+      parent: this.injector,
+    });
+
+    this.viewContainer.createComponent(InlineEditControls, { injector });
   }
 
   @HostListener('window:keydown', ['$event'])
@@ -260,13 +273,12 @@ export class InlineEditControls implements AfterViewInit {
 
   isEditMode = false;
 
-  constructor(@Host() private readonly matTable: MatTable<unknown>) {}
+  constructor(@SkipSelf() private readonly matTable: MatTable<unknown>) {}
 
   public ngAfterViewInit(): void {
     // https://github.com/angular/components/issues/21791
     const existingHeaderRowDefs = this.matTable._contentHeaderRowDefs;
     for (const row of existingHeaderRowDefs.toArray()) {
-      console.log(row);
       this.matTable.removeHeaderRowDef(row);
     }
     this.matTable.addHeaderRowDef(this.headerRowDef);
