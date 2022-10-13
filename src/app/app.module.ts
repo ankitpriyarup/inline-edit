@@ -6,8 +6,7 @@ import { MatTableModule } from '@angular/material/table';
 import { AppComponent } from './app.component';
 import { HelloComponent } from './hello.component';
 import {
-  InlineEditControlsDirective,
-  InlineEditControlsRow,
+  InlineEditControls,
   InlineEditDirective,
 } from './inline-edit.directive';
 
@@ -17,8 +16,7 @@ import {
     AppComponent,
     HelloComponent,
     InlineEditDirective,
-    InlineEditControlsDirective,
-    InlineEditControlsRow,
+    InlineEditControls,
   ],
   bootstrap: [AppComponent],
 })

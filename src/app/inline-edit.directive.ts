@@ -11,8 +11,15 @@ import {
   HostListener,
   Renderer2,
   Component,
+  AfterViewInit,
+  ViewChild,
 } from '@angular/core';
-import { MatRow, MatTable } from '@angular/material/table';
+import {
+  MatColumnDef,
+  MatHeaderRowDef,
+  MatRow,
+  MatTable,
+} from '@angular/material/table';
 import { BehaviorSubject, pairwise } from 'rxjs';
 
 type Position = [number, number];
@@ -231,24 +238,29 @@ export class InlineEditDirective {
 }
 
 @Component({
-  selector: 'inline-edit-controls-row',
-  template: '<mat-header-row *matHeaderRowDef="[]"></mat-header-row>',
+  selector: 'inline-edit-controls',
+  template: `
+  <ng-container matColumnDef="inline-edit-controls">
+    <mat-header-cell *matHeaderCellDef>
+      <p>It works</p>
+    </mat-header-cell>
+  </ng-container>
+  <<mat-header-row *matHeaderRowDef="['inline-edit-controls']; sticky: true">
+  </mat-header-row>>`,
 })
-export class InlineEditControlsRow {}
+export class InlineEditControls implements AfterViewInit {
+  @ViewChild(MatColumnDef, { static: true })
+  private columnDef: MatColumnDef | undefined;
 
-@Directive({
-  selector: '[inlineEditControls]',
-})
-export class InlineEditControlsDirective {
-  @Input() inlineEditControls: MatTable<unknown>;
+  @ViewChild(MatHeaderRowDef, { static: true })
+  private headerRowDef: MatHeaderRowDef | undefined;
 
-  constructor(
-    private templateRef: TemplateRef<unknown>,
-    private viewContainerRef: ViewContainerRef
-  ) {}
+  constructor(@Host() private readonly matTable: MatTable<unknown>) {}
 
-  ngOnInit() {
-    this.viewContainerRef.createComponent(InlineEditControlsRow);
-    this.inlineEditControls.addHeaderRowDef
+  public ngAfterViewInit(): void {
+    if (this.headerRowDef) {
+      this.matTable.addHeaderRowDef(this.headerRowDef);
+      this.matTable.addColumnDef(this.columnDef);
+    }
   }
 }
